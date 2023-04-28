@@ -27,6 +27,7 @@ public class Sql {
     }
 
     public long update() {
-        return 0;
+        String sql = sqlBuilder.toString();
+        return simpleDb.runUpdateAndGetGeneratedKey(sql, params.toArray());
     }
 }
