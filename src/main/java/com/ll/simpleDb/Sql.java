@@ -25,4 +25,8 @@ public class Sql {
         String sql = sqlBuilder.toString();
         return simpleDb.runInsertAndGetGeneratedKey(sql, params.toArray());
     }
+
+    public long update() {
+        return 0;
+    }
 }
