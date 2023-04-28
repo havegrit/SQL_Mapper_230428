@@ -62,15 +62,16 @@ public class SimpleDb {
             throw new RuntimeException(e);
         }
     }
+
     public long runUpdateAndGetGeneratedKey(String sql, Object... args) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement updateStatement = connection.prepareStatement(sql)) {
             for (int i = 0; i < args.length; i++) {
-                preparedStatement.setObject(i + 1, args[i]);
+                updateStatement.setObject(i + 1, args[i]);
             }
 
-            long updatedRows = preparedStatement.executeUpdate();
+            long updatedRows = updateStatement.executeUpdate();
             String selectSql = "SELECT * FROM article ORDER BY modifiedDate DESC LIMIT %d;".formatted(updatedRows);
-            PreparedStatement selectStatement = connection.prepareStatement(selectSql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement selectStatement = connection.prepareStatement(selectSql);
 
             ResultSet resultSet = selectStatement.executeQuery();
 
